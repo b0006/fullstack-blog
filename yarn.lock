@@ -1280,7 +1280,7 @@ array-flatten@1.1.1:
   resolved "https://registry.yarnpkg.com/array-flatten/-/array-flatten-1.1.1.tgz#9a5f699051b1e7073328f2a008968b64ea2955d2"
   integrity sha1-ml9pkFGx5wczKPKgCJaLZOopVdI=
 
-array-flatten@^2.1.0:
+array-flatten@^2.1.0, array-flatten@^2.1.2:
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/array-flatten/-/array-flatten-2.1.2.tgz#24ef80a28c1a893617e2149b0c6d0d788293b099"
   integrity sha512-hNfzcOV8W4NdualtqBFPyVO+54DSJuZGY9qT4pRroB6S9e3iiido2ISIC5h9R2sPJ8H3FHCIiEnsv1lPXO3KtQ==
@@ -9547,6 +9547,10 @@ typedarray@^0.0.6:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
+
+uWebSockets.js@uNetworking/uWebSockets.js#v15.1.0:
+  version "15.1.0"
+  resolved "https://codeload.github.com/uNetworking/uWebSockets.js/tar.gz/7d7ab5409f5cdcda11a97d2a45fc0c0e3fb3b76a"
 
 uglify-js@3.4.x, uglify-js@^3.1.4:
   version "3.4.9"
