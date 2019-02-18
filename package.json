@@ -1,0 +1,38 @@
+{
+  "name": "my_blog",
+  "version": "0.0.1",
+  "description": "",
+  "author": {
+    "name": "Kasikov Alexandr"
+  },
+  "license": "MIT",
+  "scripts": {
+    "client": "cd client && yarn start",
+    "server": "nodemon server/index.js",
+    "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
+    "dev:server": "cd client && yarn build && cd .. && yarn start",
+    "start": "node server/index.js",
+    "heroku-postbuild": "cd client && npm install && npm install --only=dev --no-shrinkwrap && npm run build"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "react-dom": "^16.8.2"
+  },
+  "devDependencies": {
+    "concurrently": "^4.1.0",
+    "nodemon": "^1.18.10",
+    "react": "^16.8.2",
+    "react-scripts": "^2.1.5"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/b0006/my_blog"
+  },
+  "keywords": [
+    "node",
+    "express",
+    "react",
+    "create-react-app"
+  ]
+}
