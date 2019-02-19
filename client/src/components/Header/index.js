@@ -2,22 +2,23 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
+import './Header.css';
+
 class Header extends Component {
   render() {
     const { loggedIn } = this.props;
 
     const logoutLink = loggedIn
-      ? <li><Link to="/logout">Logout</Link></li>
+      ? <Link to="/logout">Logout</Link>
       : null;
 
-
     return (
-      <div>
-        <ul>
-          <li><Link to="/admin">Admin</Link></li>
-          <li><Link to="/">Home</Link></li>
+      <div className="header">
+        <Link to="/" className="logo">Logo</Link>
+        <div className="header-right">
+          <Link to="/" className="active">Home</Link>
           {logoutLink}
-        </ul>
+        </div>
       </div>
     );
   }
