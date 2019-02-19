@@ -8,9 +8,11 @@
       "experimentalObjectRestSpread": true
     }
   },
+  "parser": "babel-eslint",
   "env": {
     "es6": true,
-    "node": true
+    "node": true,
+    "browser": true
   },
   "rules": {
     "indent": ["error", 2],

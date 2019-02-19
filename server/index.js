@@ -5,14 +5,14 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const bodyParser = require('body-parser');
 
-const app = express();
-const port = process.env.PORT || 5000;
+const models = require('./database/models');
 
 const homeRouter = require('./routes/home');
 const authRouter = require('./routes/auth');
 
-//Models
-const models = require('./database/models');
+
+const app = express();
+const port = process.env.PORT || 5000;
 
 //load passport strategies
 require('./passport')(passport, models.user);
@@ -51,15 +51,15 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 
 
-if (process.env.NODE_ENV === 'production') {
-  // Serve any static files
-  app.use(express.static(path.join(__dirname, 'client/build')));
-
-  // Handle React routing, return all requests to React app
-  app.get('*', function(req, res) {
-    res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
-  });
-}
+// if (process.env.NODE_ENV === 'production') {
+//   // Serve any static files
+//   app.use(express.static(path.join(__dirname, 'client/build')));
+//
+//   // Handle React routing, return all requests to React app
+//   app.get('*', function(req, res) {
+//     res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
+//   });
+// }
 
 app.use('/', homeRouter);
 app.use('/', authRouter);

@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+
+import { authActions } from '../../actions';
 
 class Login extends Component {
   state = {
@@ -10,31 +13,23 @@ class Login extends Component {
   onChangeLogin = (event) => {
     this.setState({
       login: event.target.value
-    })
+    });
   };
 
   onChangePass = (event) => {
     this.setState({
       password: event.target.value
-    })
+    });
   };
 
   onSubmit = async (event) => {
     event.preventDefault();
-    console.log(this.state);
     const { login, password } = this.state;
+    const { signIn } = this.props;
 
-    const rawResponse = await fetch('http://localhost:5000/login', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json, text/plain, */*',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({login: login, password: password})
-    });
-    const content = await rawResponse.json();
-
-    console.log(content);
+    if (login.length > 0 && password.length > 0) {
+      signIn(login, password);
+    }
   };
 
   render() {
@@ -49,4 +44,17 @@ class Login extends Component {
   }
 }
 
-export default Login;
+const mapStateToProps = (state) => {
+  const { loggedIn, errorMsg, user } = state.authentication;
+  return {
+    loggedIn,
+    errorMsg,
+    user
+  };
+};
+
+const mapDispatchToProps = {
+  signIn: authActions.signIn
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
