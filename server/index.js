@@ -1,8 +1,8 @@
 const express = require('express');
 const path = require('path');
+const session = require('express-session');
 const passport = require('passport');
 const cookieParser = require('cookie-parser');
-const session = require('express-session');
 const bodyParser = require('body-parser');
 
 const models = require('./database/models');
@@ -16,23 +16,6 @@ const port = process.env.PORT || 5000;
 
 //load passport strategies
 require('./passport')(passport, models.user);
-// For Passport
-app.use(session({
-  // store: new RedisStore({
-  //     url: 'redis://localhost',
-  // }),
-  secret: 'punks not dead',
-  resave: true, // saved new sessions
-  saveUninitialized: true, // do not automatically write to the session store
-  cookie: {
-    maxAge: new Date(Date.now() + 3600000),
-    expires: new Date(Date.now() + 3600000)
-  }
-}));
-
-app.use(passport.initialize());
-app.use(passport.session()); // persistent login sessions
-
 
 //CORS middleware
 const allowCrossDomain = function(req, res, next) {
@@ -44,11 +27,20 @@ const allowCrossDomain = function(req, res, next) {
 };
 app.use(allowCrossDomain);
 
-app.use(bodyParser.urlencoded({
-  extended: true
+app.use(cookieParser('punks_not_dead'));
+app.use(bodyParser());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(session({
+  secret: 'punks_not_dead',
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    maxAge: new Date(Date.now() + 3600000),
+    expires: new Date(Date.now() + 3600000)
+  }
 }));
-app.use(bodyParser.json());
-app.use(cookieParser());
+app.use(passport.initialize());
+app.use(passport.session());
 
 
 // if (process.env.NODE_ENV === 'production') {

@@ -1,12 +1,26 @@
+import Cookies from 'js-cookie';
 import { authConstants } from '../constants';
 
-const initialState = {
+let user = Cookies.get('auth_user');
+if (user) {
+  user = JSON.parse(user).user;
+}
+
+const templateState = {
   loggedIn: false,
   user: {
-    login: 'user'
+    login: null
   },
   errorMsg: null
 };
+
+const initialState = user ? {
+  loggedIn: true,
+  user: {
+    login: user.login
+  },
+  errorMsg: null
+} : templateState;
 
 const authentication = (state = initialState, action) => {
   switch (action.type) {
@@ -27,7 +41,7 @@ const authentication = (state = initialState, action) => {
   case authConstants.AUTH_LOGOUT_REQUEST:
     return state;
   case authConstants.AUTH_LOGOUT_SUCCESS:
-    return initialState;
+    return templateState;
   case authConstants.AUTH_LOGOUT_FAILURE:
     return state;
 

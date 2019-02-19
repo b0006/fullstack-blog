@@ -8,7 +8,7 @@ window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?
 
 const store = createStore(
   reducer,
-  composeSetup(applyMiddleware(thunkMiddleware))
+  composeSetup(applyMiddleware(thunkMiddleware)),
 );
 
 export default store;

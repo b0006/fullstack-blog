@@ -15,10 +15,18 @@ class Auth {
         if (err) { return next(err); }
         return res.send({
           status: true,
-          message: 'Аутентификация прошла успешно'
+          message: 'Аутентификация прошла успешно',
+          session: req.session
         });
       });
     })(req, res, next);
+  }
+
+  static logout(req, res, next) {
+    req.session.destroy(function(err) {
+      if (err) { return next(err); }
+      return res.send({status: true});
+    });
   }
 }
 
