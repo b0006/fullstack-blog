@@ -6,17 +6,20 @@ class Auth {
       if (err) { return next(err); }
       if (!user) {
         return res.send({
-          status: false,
-          message: info.message
+          message: info.message,
+          status: false
         });
       }
 
       req.logIn(user, function(err) {
         if (err) { return next(err); }
         return res.send({
-          status: true,
           message: 'Аутентификация прошла успешно',
-          session: req.session
+          session: {
+            id: req.sessionID,
+            user: req.session.passport.user
+          },
+          status: true
         });
       });
     })(req, res, next);

@@ -11,7 +11,7 @@ let db = {};
 fs
   .readdirSync(__dirname)
   .filter(function(file) {
-    return (file.indexOf('.') !== 0) && (file !== 'index.js');
+    return (file.indexOf('.') !== 0) && (file !== 'index.js'); // eslint-disable-line
   })
   .forEach(function(file) {
     let model = sequelize.import(path.join(__dirname, file));

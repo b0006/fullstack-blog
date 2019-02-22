@@ -10,9 +10,12 @@ const models = require('./database/models');
 const homeRouter = require('./routes/home');
 const authRouter = require('./routes/auth');
 
+const articleApiRouter = require('./routes/api/article');
 
 const app = express();
-const port = process.env.PORT || 5000;
+
+const defaultPort = 5000;
+const port = process.env.PORT || defaultPort;
 
 //load passport strategies
 require('./passport')(passport, models.user);
@@ -30,13 +33,15 @@ app.use(allowCrossDomain);
 app.use(cookieParser('punks_not_dead'));
 app.use(bodyParser());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+const oneHour = 3600000;
 app.use(session({
   secret: 'punks_not_dead',
   resave: false,
   saveUninitialized: false,
   cookie: {
-    maxAge: new Date(Date.now() + 3600000),
-    expires: new Date(Date.now() + 3600000)
+    maxAge: new Date(Date.now() + oneHour),
+    expires: new Date(Date.now() + oneHour)
   }
 }));
 app.use(passport.initialize());
@@ -55,6 +60,7 @@ app.use(passport.session());
 
 app.use('/', homeRouter);
 app.use('/', authRouter);
+app.use('/api/articles/', articleApiRouter);
 
 models.sequelize.sync().then(function() {
 

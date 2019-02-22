@@ -17,8 +17,8 @@ class Logout extends Component {
 const mapStateToProps = (state) => {
   const { loggedIn, errorMsg, user } = state.authentication;
   return {
-    loggedIn,
     errorMsg,
+    loggedIn,
     user
   };
 };

@@ -1,25 +1,26 @@
 import Cookies from 'js-cookie';
 import { authConstants } from '../constants';
 
-let user = Cookies.get('auth_user');
-if (user) {
-  user = JSON.parse(user).user;
+const session = Cookies.get(authConstants.COOKIE_KEY);
+let user = null;
+if (session) {
+  user = JSON.parse(session).user;
 }
 
 const templateState = {
+  errorMsg: null,
   loggedIn: false,
   user: {
     login: null
-  },
-  errorMsg: null
+  }
 };
 
 const initialState = user ? {
+  errorMsg: null,
   loggedIn: true,
   user: {
     login: user.login
-  },
-  errorMsg: null
+  }
 } : templateState;
 
 const authentication = (state = initialState, action) => {

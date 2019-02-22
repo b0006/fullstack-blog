@@ -4,12 +4,14 @@ import { Redirect } from 'react-router-dom';
 
 import { authActions } from '../../actions';
 
+import './Login.css';
+
 class Login extends Component {
   state = {
-    submitted: false,
+    clientError: [],
     login: '',
     password: '',
-    clientError: []
+    submitted: false
   };
 
   componentDidMount() {
@@ -54,16 +56,36 @@ class Login extends Component {
     }
 
     const errorServer = submitted && errorMsg
-      ? <div><span>{errorMsg}</span><br /></div>
+      ? <div><span className="error">{errorMsg}</span><br /></div>
       : null;
 
     return (
       <form onSubmit={this.onSubmit}>
-        <h2>Login</h2>
-        {errorServer}
-        <input type="text" onChange={this.onChangeLogin} placeholder="Login" />
-        <input type="password" onChange={this.onChangePass} placeholder="Password" />
-        <input type="submit" defaultValue="Sign in" />
+        <div className="row login_form">
+          <div className="col-md-12">
+            <h1>Login</h1>
+          </div>
+
+          <div className="col-md-12">
+            <label><b>Username</b></label>
+            <input className="login_form__input_text" type="text" onChange={this.onChangeLogin} placeholder="Username" required />
+          </div>
+          <div className="col-md-12">
+            <label><b>Password</b></label>
+            <input className="login_form__input_text" type="password" onChange={this.onChangePass} placeholder="Password" required />
+          </div>
+
+          <div className="col-md-12">
+            <div className="error_block">
+              {errorServer}
+            </div>
+          </div>
+
+          <div className="col-md-12">
+            <button className="btn_green" type="submit">Sign in</button>
+          </div>
+
+        </div>
       </form>
     );
   }
@@ -72,8 +94,8 @@ class Login extends Component {
 const mapStateToProps = (state) => {
   const { loggedIn, errorMsg, user } = state.authentication;
   return {
-    loggedIn,
     errorMsg,
+    loggedIn,
     user
   };
 };

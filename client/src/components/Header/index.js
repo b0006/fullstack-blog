@@ -9,14 +9,14 @@ class Header extends Component {
     const { loggedIn } = this.props;
 
     const logoutLink = loggedIn
-      ? <Link to="/logout">Logout</Link>
+      ? <Link to="/logout">Выйти</Link>
       : null;
 
     return (
       <div className="header">
         <Link to="/" className="logo">Logo</Link>
         <div className="header-right">
-          <Link to="/" className="active">Home</Link>
+          <Link to="/" className="active">Главная</Link>
           {logoutLink}
         </div>
       </div>

@@ -47,7 +47,7 @@ function registerValidSW(swUrl) {
   navigator.serviceWorker
     .register(swUrl)
     .then(registration => {
-      registration.onupdatefound = () => {
+      registration.onupdatefound = () => { // eslint-disable-line
         const installingWorker = registration.installing;
         installingWorker.onstatechange = () => {
           if (installingWorker.state === 'installed') {
@@ -78,8 +78,8 @@ function checkValidServiceWorker(swUrl) {
     .then(response => {
       // Ensure service worker exists, and that we really are getting a JS file.
       if (
-        response.status === 404 ||
-        response.headers.get('content-type').indexOf('javascript') === -1
+        response.status === 404 || // eslint-disable-line
+        response.headers.get('content-type').indexOf('javascript') === -1 // eslint-disable-line
       ) {
         // No service worker found. Probably a different app. Reload the page.
         navigator.serviceWorker.ready.then(registration => {
