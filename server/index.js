@@ -1,5 +1,5 @@
 const express = require('express');
-// const path = require('path');
+const path = require('path');
 const session = require('express-session');
 const passport = require('passport');
 const cookieParser = require('cookie-parser');
@@ -13,54 +13,65 @@ const authRouter = require('./routes/auth');
 const articleApiRouter = require('./routes/api/article');
 
 const app = express();
-
-const defaultPort = 5000;
-const port = process.env.PORT || defaultPort;
-
 //load passport strategies
 require('./passport')(passport, models.user);
 
-//CORS middleware
-const allowCrossDomain = function(req, res, next) {
-  res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
-  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-  res.header('Access-Control-Allow-Headers', 'Content-Type');
+const passportInit = () => {
+  app.use(cookieParser('punks_not_dead'));
 
-  next();
+  const oneHour = 3600000;
+  app.use(session({
+    secret: 'punks_not_dead',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      maxAge: new Date(Date.now() + oneHour),
+      expires: new Date(Date.now() + oneHour)
+    }
+  }));
+  app.use(passport.initialize());
+  app.use(passport.session());
 };
-app.use(allowCrossDomain);
 
-app.use(cookieParser('punks_not_dead'));
-app.use(bodyParser());
-app.use(bodyParser.urlencoded({ extended: true }));
+const routeInit = () => {
+  app.use('/', homeRouter);
+  app.use('/', authRouter);
+  app.use('/api/articles/', articleApiRouter);
+};
 
-const oneHour = 3600000;
-app.use(session({
-  secret: 'punks_not_dead',
-  resave: false,
-  saveUninitialized: false,
-  cookie: {
-    maxAge: new Date(Date.now() + oneHour),
-    expires: new Date(Date.now() + oneHour)
+const corsInit = () => {
+  //CORS middleware
+  const allowCrossDomain = function(req, res, next) {
+    res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+
+    next();
+  };
+  app.use(allowCrossDomain);
+};
+
+const parserRequsetInit = () => {
+  app.use(bodyParser());
+  app.use(bodyParser.urlencoded({ extended: true }));
+};
+
+const appInit = () => {
+  corsInit();
+  parserRequsetInit();
+  passportInit();
+
+  if (process.env.NODE_ENV === 'production') {
+    app.use(express.static(path.join(__dirname, 'client/build')));
   }
-}));
-app.use(passport.initialize());
-app.use(passport.session());
 
+  routeInit();
+};
 
-// if (process.env.NODE_ENV === 'production') {
-//   // Serve any static files
-//   app.use(express.static(path.join(__dirname, 'client/build')));
-//
-//   // Handle React routing, return all requests to React app
-//   app.get('*', function(req, res) {
-//     res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
-//   });
-// }
+appInit();
 
-app.use('/', homeRouter);
-app.use('/', authRouter);
-app.use('/api/articles/', articleApiRouter);
+const defaultPort = 5000;
+const port = process.env.PORT || defaultPort;
 
 models.sequelize.sync().then(function() {
 
