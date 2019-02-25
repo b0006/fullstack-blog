@@ -1,42 +1,35 @@
 const models = require('../../database/models');
 const cache = require('memory-cache');
 
-const CACHE_ARTICLE = 'articles';
+const constants = require('../../constants').articleConstants;
 
 class Article {
-  static getList(req, res) {
-    const cacheArticle = cache.get(CACHE_ARTICLE);
+  static async getList(req, res) {
+    const cacheArticle = cache.get(constants.CACHE_ARTICLE);
+    let articles = null;
     if (cacheArticle) {
-      console.log('Статьи взяты из кэша');
-
-      res.send({
-        status: true,
-        articles: cacheArticle
-      });
+      APP.log.info('Articles get from cache');
+      articles = cacheArticle;
     } else {
-      console.log('Статьи взяты из БД');
+      APP.log.info('Articles get from DB');
 
-      models.article.findAll()
-        .then(result => {
-
-          const articles = result.map(item => item.dataValues);
-
-          cache.put(CACHE_ARTICLE, articles);
-
-          res.send({
-            status: true,
-            articles: articles
-          });
-        })
-        .catch(err => {
-          console.log('Error: ', err);
-          res.send({
-            status: false,
-            error: err
-          });
-          return false;
+      try {
+        articles = await models.article.findAll();
+      } catch (e) {
+        res.send({
+          status: false,
+          error: JSON.stringify(e)
         });
+        return false;
+      }
+      articles = articles.map(item => item.dataValues);
+      cache.put(constants.CACHE_ARTICLE, articles);
     }
+
+    res.send({
+      status: true,
+      articles
+    });
   }
 }
 

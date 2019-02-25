@@ -4,6 +4,14 @@ const session = require('express-session');
 const passport = require('passport');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
+const log4js = require('log4js');
+const logger = log4js.getLogger();
+logger.level = 'debug';
+
+const env = process.env.NODE_ENV === 'development'
+  ? 'development'
+  : 'production';
+const config = require('../config')[env];
 
 const models = require('./database/models');
 
@@ -69,6 +77,16 @@ const appInit = () => {
 };
 
 appInit();
+
+global.APP = {
+  log: (msg) => config.debug ? console.log(msg) : null
+};
+APP.log.debug = (msg) => config.debug ? logger.debug(msg) : null;
+APP.log.trace = (msg) => config.debug ? logger.trace(msg) : null;
+APP.log.info = (msg) => config.debug ? logger.info(msg) : null;
+APP.log.warn = (msg) => config.debug ? logger.warn(msg) : null;
+APP.log.error = (msg) => config.debug ? logger.error(msg) : null;
+APP.log.fatal = (msg) => config.debug ? logger.fatal(msg) : null;
 
 const defaultPort = 5000;
 const port = process.env.PORT || defaultPort;
