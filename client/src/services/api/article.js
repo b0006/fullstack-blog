@@ -15,6 +15,16 @@ export default class ArticleService {
           throw res.error;
         }
       });
+  };
 
+  getArticleByValue = (value) => {
+    return this.getResource('/article/' + value)
+      .then(res => {
+        if (res.status){
+          return res.article;
+        } else {
+          throw res.error;
+        }
+      });
   };
 }

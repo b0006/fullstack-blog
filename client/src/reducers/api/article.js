@@ -2,7 +2,9 @@ import { articleConstants } from '../../constants';
 
 const initialState = {
   articleGetError: null,
-  articleList: []
+  articleList: [],
+  currentArticle: null,
+  currentArticleLoading: true
 };
 
 const article = (state = initialState, action) => {
@@ -16,6 +18,24 @@ const article = (state = initialState, action) => {
       articleGetError: false
     };
   case articleConstants.ARTICLE_GETLIST_FAILURE:
+    return {
+      ...state,
+      articleGetError: action.error
+    };
+
+  case articleConstants.ARTICLE_GET_REQUEST:
+    return {
+      ...state,
+      currentArticleLoading: true
+    };
+  case articleConstants.ARTICLE_GET_SUCCESS:
+    return {
+      ...state,
+      currentArticle: action.article,
+      articleGetError: false,
+      currentArticleLoading: false
+    };
+  case articleConstants.ARTICLE_GET_FAILURE:
     return {
       ...state,
       articleGetError: action.error

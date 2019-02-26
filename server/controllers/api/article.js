@@ -22,6 +22,7 @@ class Article {
         });
         return false;
       }
+
       articles = articles.map(item => item.dataValues);
       cache.put(constants.CACHE_ARTICLE, articles);
     }
@@ -29,6 +30,49 @@ class Article {
     res.send({
       status: true,
       articles
+    });
+  }
+
+  static async getArticleByValue(req, res) {
+    const articleValue = req.params.value;
+    let article = null;
+
+    const cacheArticles = cache.get(constants.CACHE_ARTICLE);
+    if (cacheArticles) {
+      article = cacheArticles.find(item => item.value === articleValue);
+    }
+
+    if (!article) {
+      let articleDb = null;
+      try {
+        articleDb = await models.article.findOne({
+          where: {
+            value: articleValue
+          }
+        });
+      } catch (e) {
+        APP.log.error(e);
+        res.send({
+          status: false,
+          error: JSON.stringify(e)
+        });
+        return false;
+      }
+
+      if (!articleDb) {
+        res.send({
+          status: false,
+          error: 'Article is\'t exist'
+        });
+        return false;
+      }
+
+      article = articleDb.dataValues;
+    }
+
+    res.send({
+      status: true,
+      article
     });
   }
 }

@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const articleController = require('../../controllers/api/article');
 
-router.get('/getlist', articleController.getList);
+router.get('/articles/getlist', articleController.getList);
+
+router.get('/article/:value', articleController.getArticleByValue);
 
 module.exports = router;

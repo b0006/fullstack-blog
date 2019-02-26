@@ -44,7 +44,7 @@ const passportInit = () => {
 const routeInit = () => {
   app.use('/', homeRouter);
   app.use('/', authRouter);
-  app.use('/api/articles/', articleApiRouter);
+  app.use('/api/', articleApiRouter);
 };
 
 const corsInit = () => {

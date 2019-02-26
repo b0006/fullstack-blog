@@ -5,9 +5,10 @@ import Header from '../Header';
 import LoginPage from '../pages/LoginPage';
 import HomePage from '../pages/HomePage';
 import Logout from '../Logout';
-import Preloader from '../Preloader';
+import Preloader from '../../containers/Preloader';
 import NewArticle from '../NewArticle';
 import UpdateArticle from '../UpdateArticle';
+import Article from '../../containers/Article';
 
 import '../../assets/css/uikit.css';
 import '../../assets/css/uikit-rtl.css';
@@ -32,6 +33,7 @@ class App extends Component {
           <Route path="/logout" exact component={Logout} />
           <Route path="/newArticle" exact component={NewArticle} />
           <Route path="/updateArticle" exact component={UpdateArticle} />
+          <Route path="/article/:value" exact component={Article} />
         </Switch>
       </div>
     );

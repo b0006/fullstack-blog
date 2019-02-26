@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import './BlogItem.css';
 
 import nodejs from './nodejs.png';
-import iconTemp from './spinner.svg';
+import iconTemp from './nodejs-1440x900.png';
 
 class BlogItem extends Component {
   state = {
@@ -32,7 +32,7 @@ class BlogItem extends Component {
 
   render() {
     const { showDesc } = this.state;
-    let { img, description, title, icon } = this.props;
+    let { img, description, title, icon, value } = this.props;
     if (!img) {
       img = iconTemp;
     }
@@ -54,17 +54,16 @@ class BlogItem extends Component {
     return (
       <div className="blog-item" onMouseEnter={this.onShowDesc} onMouseLeave={this.onShowImg}>
         <div className="uk-card uk-card-hover uk-card-default">
-          <div className="uk-card-media-top uk-text-center">
-            <img src={img} alt="" />
-          </div>
-          <div className="uk-card-body">
-            <h3 className="uk-card-title">{title}</h3>
-            <p className="blog-item__desc">{description}</p>
-            <div className="blog-item__button">
-              {updateArticleBtn}
-              <button className="uk-button uk-button-primary">Читать ></button>
+          <Link to={'/article/' + value}>
+            <div className="uk-card-media-top uk-text-center">
+              <img src={img} alt={title} />
             </div>
-          </div>
+
+            <div className="uk-card-body">
+              <h3 className="uk-card-title">{title}</h3>
+              <p className="blog-item__desc">{description}</p>
+            </div>
+          </Link>
         </div>
       </div>
     );

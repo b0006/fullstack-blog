@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Spinner from '../Spinner';
+import Spinner from '../../containers/Spinner';
 
 import './Preloader.css';
 

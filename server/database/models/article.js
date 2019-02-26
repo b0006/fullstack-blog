@@ -7,8 +7,8 @@ module.exports = function(sequelize, Sequelize) {
         notEmpty: true,
         allowNull: false
       },
-      description: {
-        type: Sequelize.TEXT,
+      value: {
+        type: Sequelize.STRING,
         allowNull: false
       },
       text: {
