@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+import AddArticle from '../../containers/AddArticle';
 import { articleActions } from '../../actions';
 
 import BlogItem from './BlogItem';
@@ -13,20 +14,24 @@ class BlogList extends Component {
   }
 
   render() {
-    const { articleList } = this.props;
+    const { articleList, loggedIn } = this.props;
+
+    const newArticle = loggedIn
+      ? <AddArticle />
+      : null;
 
     return (
-      <div className="row">
+      <div className="uk-child-width-1-3@s uk-grid-match" data-uk-grid>
+        {newArticle}
         {
           articleList.map(item => (
-            <div key={'article_item_' + item.id} className="col-md-6">
-              <BlogItem
-                title={item.title}
-                img={null}
-                description={item.description}
-                icon={null}
-              />
-            </div>
+            <BlogItem
+              key={'article_item_' + item.id}
+              title={item.title}
+              img={null}
+              description={item.description}
+              icon={null}
+            />
           ))
         }
       </div>
@@ -35,10 +40,12 @@ class BlogList extends Component {
 }
 
 const mapStateToProps = (state) => {
+  const { loggedIn } = state.authentication;
   const {  articleGetError, articleList} = state.article;
   return {
     articleGetError,
-    articleList
+    articleList,
+    loggedIn
   };
 };
 

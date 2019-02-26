@@ -1,38 +1,20 @@
-.card {
-    max-height: 300px;
-    height: 100%;
-    box-shadow: 0 5px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
-    padding: 20px;
+.blog-item {
+    padding-left: 0 !important;
 }
 
-.card:hover {
-    box-shadow: 0 14px 38px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+.blog-item a{
+    text-decoration: none;
+    color: inherit;
 }
 
-.card__img {
-    text-align: center;
-    max-height: 200px;
-    height: 100vh;
+.blog-item a:hover {
+    text-decoration: none;
 }
 
-.card__desc {
-    text-align: center;
-    max-height: 200px;
-    height: 100vh;
-    margin: 0 auto;
-    width: 80%;
-    box-shadow: 0 1px 16px rgba(0,0,0,0.25);
+.blog-item__desc {
+    height: 50px;
 }
 
-.card__icon {
-
-}
-
-.card__icon img {
-    max-height: 80px;
-}
-
-.card__title {
-    font-size: 15px;
-    font-weight: 600;
+.blog-item__button {
+    text-align: right;
 }

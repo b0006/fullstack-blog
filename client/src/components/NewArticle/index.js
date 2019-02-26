@@ -1,17 +1,19 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-import Login from '../../Login';
 
-class LoginPage extends Component {
+import ArticleAdmin from '../../containers/ArticleAdmin';
+
+class NewArticle extends Component {
   render() {
     const { loggedIn } = this.props;
-
-    if (loggedIn) {
+    if (!loggedIn) {
       return <Redirect to="/" />;
     }
 
-    return <Login />;
+    return (
+      <ArticleAdmin action="add" />
+    );
   }
 }
 
@@ -22,4 +24,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(LoginPage);
+export default connect(mapStateToProps)(NewArticle);

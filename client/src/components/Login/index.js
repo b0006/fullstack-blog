@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
-
 import { authActions } from '../../actions';
 
 import './Login.css';
@@ -48,43 +46,50 @@ class Login extends Component {
   };
 
   render() {
-    const { errorMsg, loggedIn } = this.props;
+    const { errorMsg } = this.props;
     const { submitted } = this.state;
 
-    if (loggedIn) {
-      return <Redirect to="/" />;
-    }
-
     const errorServer = submitted && errorMsg
-      ? <div><span className="error">{errorMsg}</span><br /></div>
+      ? <span className="error">{errorMsg}</span>
       : null;
 
     return (
-      <form onSubmit={this.onSubmit}>
-        <div className="row login_form">
-          <div className="col-md-12">
-            <h1>Login</h1>
-          </div>
+      <form className="login_form" onSubmit={this.onSubmit}>
 
-          <div className="col-md-12">
-            <label><b>Username</b></label>
-            <input className="login_form__input_text" type="text" onChange={this.onChangeLogin} placeholder="Username" required />
-          </div>
-          <div className="col-md-12">
-            <label><b>Password</b></label>
-            <input className="login_form__input_text" type="password" onChange={this.onChangePass} placeholder="Password" required />
-          </div>
+        <div className="uk-margin">
+          <h2>Sign in</h2>
+        </div>
 
-          <div className="col-md-12">
-            <div className="error_block">
-              {errorServer}
-            </div>
+        <div className="uk-margin">
+          <div className="uk-inline">
+            <span className="uk-form-icon" data-uk-icon="icon: user" />
+            <input
+              className="uk-input"
+              type="text"
+              onChange={this.onChangeLogin}
+              placeholder="Login"
+            />
           </div>
+        </div>
 
-          <div className="col-md-12">
-            <button className="btn_green" type="submit">Sign in</button>
+        <div className="uk-margin">
+          <div className="uk-inline">
+            <span className="uk-form-icon uk-form-icon-flip" data-uk-icon="icon: lock" />
+            <input
+              className="uk-input"
+              type="password"
+              onChange={this.onChangePass}
+              placeholder="Password"
+            />
           </div>
+        </div>
 
+        <div className="uk-margin error_block">
+          {errorServer}
+        </div>
+
+        <div className="uk-margin">
+          <input type="submit" className="uk-button uk-button-secondary" value="Sign in" />
         </div>
       </form>
     );
@@ -92,10 +97,9 @@ class Login extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const { loggedIn, errorMsg, user } = state.authentication;
+  const { errorMsg, user } = state.authentication;
   return {
     errorMsg,
-    loggedIn,
     user
   };
 };

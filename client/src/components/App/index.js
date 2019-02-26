@@ -2,13 +2,15 @@ import React, { Component } from 'react';
 import { Route, Switch } from 'react-router-dom';
 
 import Header from '../Header';
-import Navbar from '../Navbar';
 import LoginPage from '../pages/LoginPage';
 import HomePage from '../pages/HomePage';
 import Logout from '../Logout';
 import Preloader from '../Preloader';
+import NewArticle from '../NewArticle';
+import UpdateArticle from '../UpdateArticle';
 
-import './App.css';
+import '../../assets/css/uikit.css';
+import '../../assets/css/uikit-rtl.css';
 
 class App extends Component {
   state = { isLoading: true };
@@ -22,13 +24,14 @@ class App extends Component {
       return <Preloader />;
 
     return (
-      <div className='container'>
+      <div className='uk-container'>
         <Header />
-        <Navbar />
         <Switch>
           <Route path="/" exact component={HomePage} />
           <Route path="/admin" exact component={LoginPage} />
           <Route path="/logout" exact component={Logout} />
+          <Route path="/newArticle" exact component={NewArticle} />
+          <Route path="/updateArticle" exact component={UpdateArticle} />
         </Switch>
       </div>
     );

@@ -7,10 +7,10 @@
   },
   "license": "MIT",
   "scripts": {
-    "build": "webpack",
     "client": "cd client && yarn start",
     "server": "nodemon server/index",
-    "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
+    "dev": "NODE_ENV=development concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
+    "prod": "NODE_ENV=production concurrently --kill-others-on-fail \"yarn server\"",
     "dev:server": "cd client && yarn build && cd .. && yarn start",
     "start": "node server/index",
     "heroku-postbuild": "cd client && npm install && npm install --only=dev --no-shrinkwrap && npm run build"

@@ -69,8 +69,12 @@ const appInit = () => {
   parserRequsetInit();
   passportInit();
 
-  if (process.env.NODE_ENV === 'production') {
-    app.use(express.static(path.join(__dirname, 'client/build')));
+  if (env === 'production') {
+    app.use(express.static('client/build'));
+
+    app.get('/', function(req, res) {
+      res.sendFile(path.join('/client/build', 'index.html'));
+    });
   }
 
   routeInit();
@@ -92,6 +96,7 @@ const defaultPort = 5000;
 const port = process.env.PORT || defaultPort;
 
 models.sequelize.sync().then(function() {
+  console.log('NODE_ENV:', env);
 
   app.listen(port, () => console.log(`Listening on port ${port}`));
 

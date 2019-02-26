@@ -57,7 +57,7 @@ module.exports = function(passport, user) {
         return done(null, userinfo);
 
       }).catch(function(err) {
-        console.log('Error:', err);
+        APP.log.error('Error:', err);
         return done(null, false, {
           message: 'Ой. Неизвестная ошибка авторизации.'
         });

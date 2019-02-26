@@ -9,25 +9,36 @@ class Header extends Component {
     const { loggedIn } = this.props;
 
     const logoutLink = loggedIn
-      ? <Link to="/logout">Выйти</Link>
+      ? <li><Link to="/logout">Logout</Link></li>
+      : null;
+
+    const newArticle = loggedIn
+      ? <li><Link to="/newArticle">New article</Link></li>
       : null;
 
     return (
-      <div className="header">
-        <Link to="/" className="logo">Logo</Link>
-        <div className="header-right">
-          <Link to="/" className="active">Главная</Link>
-          {logoutLink}
+      <nav className="uk-navbar-container" data-uk-navbar>
+        <div className="uk-navbar-left">
+          <ul className="uk-navbar-nav">
+            <li className="active-menu"><Link to='/'>Home</Link></li>
+            {newArticle}
+          </ul>
         </div>
-      </div>
+        <div className="uk-navbar-right">
+          <ul className="uk-navbar-nav">
+            {logoutLink}
+          </ul>
+        </div>
+      </nav>
     );
   }
 }
 
 const mapStateToProps = (state) => {
-  const { loggedIn } = state.authentication;
+  const { loggedIn, activeMenu } = state.authentication;
   return {
-    loggedIn
+    loggedIn,
+    activeMenu
   };
 };
 

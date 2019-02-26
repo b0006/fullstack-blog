@@ -1,30 +1,5 @@
-.login_form__input_text {
-    width: 100%;
-    padding: 12px 20px;
-    margin: 8px 0;
-    display: inline-block;
-    border: 1px solid #ccc;
-    box-sizing: border-box;
-}
-
-.btn_green {
-    background-color: #4CAF50;
-    color: white;
-    padding: 14px 20px;
-    margin: 8px 0;
-    border: none;
-    cursor: pointer;
-    width: 100%;
-    font-size: 16px;
-    font-weight: bolder;
-}
-
-.btn_green:hover {
-    opacity: 0.8;
-}
-
 .error_block {
-    height: 30px;
+    height: 15px;
 }
 
 .error {
@@ -32,20 +7,5 @@
 }
 
 .login_form {
-    margin: 0 auto !important;
     text-align: center;
-    width: 40%;
-}
-
-
-@media screen and (max-width: 1000px) {
-    .login_form {
-        width: 80%;
-    }
-}
-
-@media screen and (max-width: 500px) {
-    .login_form {
-        width: 100%;
-    }
 }

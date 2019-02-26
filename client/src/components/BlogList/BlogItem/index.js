@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 import './BlogItem.css';
 
@@ -14,7 +16,7 @@ class BlogItem extends Component {
     this.setState({
       showDesc: !this.state.showDesc
     });
-  }
+  };
 
   onShowDesc = () => {
     this.setState({
@@ -39,33 +41,29 @@ class BlogItem extends Component {
       icon = nodejs;
     }
 
+    const { loggedIn } = this.props;
+    const updateArticleBtn = loggedIn
+      ? <Link to={'/updateArticle?id=1'}><button className="uk-button uk-button-secondary">Изменить</button></Link>
+      : null;
+
     // const img = iconTemp;
     // const description = 'Description of an article';
     // const title = 'Article title Article title Article title Article title Article title';
     // const icon = nodejs;
 
-    const imgBody = showDesc ?
-      <div className="card__desc">
-        {description}
-      </div>
-      :
-      <div className="card__img">
-        <img src={img} alt='img' />
-      </div>;
-
     return (
-      <div className="card" onMouseEnter={this.onShowDesc} onMouseLeave={this.onShowImg} /*onClick={this.onChange}*/ >
-        {imgBody}
-        <div className="row">
-          <div className="col-md-3">
-            <span className="card__icon">
-              <img src={icon} alt='icon' />
-            </span>
+      <div className="blog-item" onMouseEnter={this.onShowDesc} onMouseLeave={this.onShowImg}>
+        <div className="uk-card uk-card-hover uk-card-default">
+          <div className="uk-card-media-top uk-text-center">
+            <img src={img} alt="" />
           </div>
-          <div className="col-md-9">
-            <span className="card__title">
-              {title}
-            </span>
+          <div className="uk-card-body">
+            <h3 className="uk-card-title">{title}</h3>
+            <p className="blog-item__desc">{description}</p>
+            <div className="blog-item__button">
+              {updateArticleBtn}
+              <button className="uk-button uk-button-primary">Читать ></button>
+            </div>
           </div>
         </div>
       </div>
@@ -73,4 +71,11 @@ class BlogItem extends Component {
   }
 }
 
-export default BlogItem;
+const mapStateToProps = (state) => {
+  const { loggedIn } = state.authentication;
+  return {
+    loggedIn
+  };
+};
+
+export default connect(mapStateToProps)(BlogItem);

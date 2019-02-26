@@ -16,7 +16,7 @@ const templateState = {
 };
 
 const initialState = user ? {
-  errorMsg: null,
+  ...templateState,
   loggedIn: true,
   user: {
     login: user.login
