@@ -4,7 +4,8 @@ const initialState = {
   articleGetError: null,
   articleList: [],
   currentArticle: null,
-  currentArticleLoading: true
+  currentArticleLoading: true,
+  addArticleSuccess: null
 };
 
 const article = (state = initialState, action) => {
@@ -40,6 +41,23 @@ const article = (state = initialState, action) => {
       ...state,
       articleGetError: action.error
     };
+
+  case articleConstants.ARTICLE_ADD_REQUEST:
+    return {
+      ...state,
+      addArticleSuccess: null
+    };
+  case articleConstants.ARTICLE_ADD_SUCCESS:
+    return {
+      ...state,
+      addArticleSuccess: true
+    };
+  case articleConstants.ARTICLE_ADD_FAILURE:
+    return {
+      ...state,
+      addArticleSuccess: false
+    };
+
   default:
     return state;
   }

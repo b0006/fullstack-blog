@@ -6,6 +6,19 @@ export default class ArticleService {
     return res.json();
   };
 
+  setResource = async (url, content) => {
+    const res = await fetch(apiBase + url, {
+      method: 'POST',
+      body: JSON.stringify(content),
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }
+    });
+
+    return res.json();
+  };
+
   getList = () => {
     return this.getResource('/articles/getList')
       .then(res => {
@@ -27,4 +40,17 @@ export default class ArticleService {
         }
       });
   };
+
+  addArticle = (title, content) => {
+    return this.setResource('/newArticle', {
+      title,
+      content
+    }).then(res => {
+      if (res.status){
+        return res.status;
+      } else {
+        throw res.error;
+      }
+    });
+  }
 }

@@ -1,6 +1,8 @@
 const models = require('../../database/models');
 const cache = require('memory-cache');
 
+const { translit } = require('../../utils/translit');
+
 const constants = require('../../constants').articleConstants;
 
 class Article {
@@ -75,6 +77,63 @@ class Article {
       article
     });
   }
+
+  static async addArticle(req, res) {
+    const { title, content } = req.body;
+
+    const value = translit(title);
+
+    try {
+      const [article, created] = await models.article.findOrCreate({
+        where: {
+          title,
+          value
+        },
+        defaults: {
+          title,
+          text: content,
+          value,
+          keyWords: 'nodejs, react'
+        }
+      });
+      if (created) {
+        addCookieArticle(article.dataValues);
+        res.send({
+          status: true
+        });
+      } else {
+        res.send({
+          status: false,
+          error: 'Article already exist'
+        });
+      }
+    } catch (e) {
+      APP.log.error(e);
+      res.send({
+        status: false,
+        error: e.toString()
+      });
+      return false;
+    }
+  }
+}
+
+function addCookieArticle(newArticle) {
+  const cacheArticles = cache.get(constants.CACHE_ARTICLE);
+  clearCookieArticle();
+
+  console.log(cacheArticles);
+
+  let newArticles = cacheArticles;
+  newArticles.push(newArticle);
+
+  console.log(newArticles);
+
+  cache.put(constants.CACHE_ARTICLE, newArticles);
+}
+
+function clearCookieArticle() {
+  cache.del(constants.CACHE_ARTICLE);
 }
 
 module.exports = Article;

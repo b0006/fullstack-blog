@@ -60,8 +60,8 @@ const corsInit = () => {
 };
 
 const parserRequsetInit = () => {
-  app.use(bodyParser());
   app.use(bodyParser.urlencoded({ extended: true }));
+  app.use(bodyParser.json());
 };
 
 const appInit = () => {

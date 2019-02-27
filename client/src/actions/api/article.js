@@ -43,7 +43,28 @@ function getArticleByValue(value) {
   function failure(error) { return { type: articleConstants.ARTICLE_GET_FAILURE, error }; }
 }
 
+function addArticle(title, content) {
+  return dispatch => {
+    dispatch(request(title));
+
+    articleStoreService.addArticle(title, content)
+      .then(
+        () => {
+          dispatch(success());
+        },
+        () => {
+          dispatch(failure());
+        }
+      );
+  };
+
+  function request() { return { type: articleConstants.ARTICLE_ADD_REQUEST }; }
+  function success() { return { type: articleConstants.ARTICLE_ADD_SUCCESS }; }
+  function failure() { return { type: articleConstants.ARTICLE_ADD_FAILURE }; }
+}
+
 export {
   getList,
-  getArticleByValue
+  getArticleByValue,
+  addArticle
 };

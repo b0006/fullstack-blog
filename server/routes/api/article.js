@@ -6,4 +6,6 @@ router.get('/articles/getlist', articleController.getList);
 
 router.get('/article/:value', articleController.getArticleByValue);
 
+router.post('/newArticle', articleController.addArticle);
+
 module.exports = router;

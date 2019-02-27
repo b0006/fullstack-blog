@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+
 import { articleActions } from '../../actions';
-import Preloader from '../Preloader';
+import Preloader from '../../containers/Preloader';
+import ArticleInner from '../../containers/ArticleInner';
 
 class Article extends Component {
   componentDidMount() {
@@ -17,12 +19,10 @@ class Article extends Component {
     }
 
     return (
-      <div>
-        <h2>{currentArticle.title}</h2>
-        <div>
-          {currentArticle.text}
-        </div>
-      </div>
+      <ArticleInner
+        title={currentArticle.title}
+        text={currentArticle.text}
+      />
     );
   }
 }
