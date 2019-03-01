@@ -52,5 +52,17 @@ export default class ArticleService {
         throw res.error;
       }
     });
-  }
+  };
+
+  deleteArticle = (articleId) => {
+    return this.setResource('/deleteArticle', {
+      articleId
+    }).then(res => {
+      if (res.status){
+        return res.articles;
+      } else {
+        throw res.error;
+      }
+    });
+  };
 }

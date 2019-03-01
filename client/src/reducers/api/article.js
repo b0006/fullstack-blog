@@ -6,12 +6,7 @@ const initialState = {
   currentArticle: null,
   currentArticleLoading: true,
   addArticleSuccess: null,
-
-  showModalDelete: false,
-  currentArticleId: null,
-
-  modalType: null,
-  modalProps: {}
+  deleteArticleSuccess: null
 };
 
 const article = (state = initialState, action) => {
@@ -62,6 +57,23 @@ const article = (state = initialState, action) => {
     return {
       ...state,
       addArticleSuccess: false
+    };
+
+  case articleConstants.ARTICLE_DELETE_REQUEST:
+    return {
+      ...state,
+      deleteArticleSuccess: null
+    };
+  case articleConstants.ARTICLE_DELETE_SUCCESS:
+    return {
+      ...state,
+      deleteArticleSuccess: true,
+      articleList: action.articles
+    };
+  case articleConstants.ARTICLE_DELETE_FAILURE:
+    return {
+      ...state,
+      deleteArticleSuccess: false
     };
 
   default:

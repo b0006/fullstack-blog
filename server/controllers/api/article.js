@@ -118,17 +118,55 @@ class Article {
       return false;
     }
   }
+
+  static async deleteArticle(req, res) {
+    const { articleId } = req.body;
+
+    try {
+      const removed = await models.article.destroy({
+        where: {
+          id: articleId
+        }
+      });
+
+      const status = !!removed;
+
+      console.log(`Result [${articleId}]: ${removed}`);
+      const newArticles = updateCookieArticle(null, articleId);
+      res.send({
+        status: status,
+        articles: newArticles
+      });
+
+    } catch (e) {
+      res.send({
+        status: false,
+        error: e.toString()
+      });
+    }
+  }
 }
 
-function updateCookieArticle(newArticle) {
-  if (newArticle.length) {
-    cache.put(constants.CACHE_ARTICLE, newArticle);
+function updateCookieArticle(newArticle = null, articleId = null) {
+  if (newArticle) {
+    if (newArticle.length) {
+      cache.put(constants.CACHE_ARTICLE, newArticle);
+    } else {
+      const cacheArticle = cache.get(constants.CACHE_ARTICLE);
+      if (cacheArticle) {
+        cacheArticle.unshift(newArticle);
+        cache.put(constants.CACHE_ARTICLE, cacheArticle);
+      }
+    }
   } else {
     const cacheArticle = cache.get(constants.CACHE_ARTICLE);
-    if (cacheArticle) {
-      cacheArticle.unshift(newArticle);
-      cache.put(constants.CACHE_ARTICLE, cacheArticle);
-    }
+    const removeIndex = cacheArticle.findIndex(item => item.id === articleId);
+
+    let newArray = cacheArticle.slice();
+    newArray.splice(removeIndex, 1);
+    cache.put(constants.CACHE_ARTICLE, newArray);
+
+    return newArray;
   }
 }
 

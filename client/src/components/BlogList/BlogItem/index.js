@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 import './BlogItem.css';
 import iconTemp from './nodejs-1440x900.png';
-import { modalActions } from '../../../actions';
+import { articleActions, modalActions } from '../../../actions';
 import { articleConstants } from '../../../constants';
 
 class BlogItem extends Component {
@@ -14,7 +14,8 @@ class BlogItem extends Component {
   };
 
   onDeleteArticle = (articleId) => {
-
+    const { deleteArticle } = this.props;
+    deleteArticle(articleId);
   };
 
   openConfirmModal = (articleId, articleTitle) => {
@@ -25,11 +26,10 @@ class BlogItem extends Component {
       open: true,
       title: 'Delete',
       text: `Are you sure you want to delete "${articleTitle}"?`,
-      btnOk: 'Delete',
-      btnCancel: 'Cancel',
-      confirmAction: this.closeModal,
-      closeModal: this.closeModal,
-      confirmModal: this.onDeleteArticle(articleId)
+      btnOkText: 'Delete',
+      btnCancelText: 'Cancel',
+      confirmAction: () => { this.onDeleteArticle(articleId); },
+      closeModal: this.closeModal
     }, 'confirm');
   };
 
@@ -72,7 +72,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
   showModal: modalActions.showModal,
-  hideModal: modalActions.hideModal
+  hideModal: modalActions.hideModal,
+  deleteArticle: articleActions.deleteArticle
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(BlogItem);

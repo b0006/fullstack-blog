@@ -62,8 +62,30 @@ function addArticle(title, content) {
   function success() { return { type: articleConstants.ARTICLE_ADD_SUCCESS }; }
   function failure() { return { type: articleConstants.ARTICLE_ADD_FAILURE }; }
 }
+
+function deleteArticle(articleId) {
+  return dispatch => {
+    dispatch(request(articleId));
+
+    articleStoreService.deleteArticle(articleId)
+      .then(
+        (newArticles) => {
+          dispatch(success(newArticles));
+        },
+        (err) => {
+          dispatch(failure(err));
+        }
+      );
+  };
+
+  function request() { return { type: articleConstants.ARTICLE_DELETE_REQUEST }; }
+  function success(articles) { return { type: articleConstants.ARTICLE_DELETE_SUCCESS, articles }; }
+  function failure(error) { return { type: articleConstants.ARTICLE_DELETE_FAILURE, error }; }
+}
+
 export {
   getList,
   getArticleByValue,
-  addArticle
+  addArticle,
+  deleteArticle
 };

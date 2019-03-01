@@ -8,4 +8,6 @@ router.get('/article/:value', articleController.getArticleByValue);
 
 router.post('/newArticle', articleController.addArticle);
 
+router.post('/deleteArticle', articleController.deleteArticle);
+
 module.exports = router;
