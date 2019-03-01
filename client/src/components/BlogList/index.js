@@ -2,15 +2,17 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import AddArticle from '../../containers/AddArticle';
-import {articleActions, modalActions} from '../../actions';
+import { articleActions, modalActions } from '../../actions';
 
 import BlogItem from './BlogItem';
 
 class BlogList extends Component {
   componentWillUpdate(nextProps, nextState, nextContext) {
-    const { deleteArticleSuccess, showModal, hideModal } = nextProps;
+    const { deleteArticleSuccess, showModal, hideModal, endDelete } = nextProps;
 
     if (deleteArticleSuccess) {
+      endDelete();
+
       showModal({
         open: true,
         title: 'Delete',
@@ -70,7 +72,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = {
   getList: articleActions.getList,
   showModal: modalActions.showModal,
-  hideModal: modalActions.hideModal
+  hideModal: modalActions.hideModal,
+  endDelete: articleActions.endDelete
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(BlogList);

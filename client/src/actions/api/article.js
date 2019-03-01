@@ -83,9 +83,18 @@ function deleteArticle(articleId) {
   function failure(error) { return { type: articleConstants.ARTICLE_DELETE_FAILURE, error }; }
 }
 
+function endDelete() {
+  return dispatch => {
+    dispatch({
+      type: articleConstants.ARTICLE_END_DELETE
+    });
+  };
+}
+
 export {
   getList,
   getArticleByValue,
   addArticle,
-  deleteArticle
+  deleteArticle,
+  endDelete
 };

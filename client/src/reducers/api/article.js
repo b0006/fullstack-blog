@@ -76,6 +76,12 @@ const article = (state = initialState, action) => {
       deleteArticleSuccess: false
     };
 
+  case articleConstants.ARTICLE_END_DELETE:
+    return {
+      ...state,
+      deleteArticleSuccess: null
+    };
+
   default:
     return state;
   }

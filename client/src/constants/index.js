@@ -29,7 +29,9 @@ export const articleConstants = keyMirror({
 
   ARTICLE_DELETE_REQUEST: null,
   ARTICLE_DELETE_SUCCESS: null,
-  ARTICLE_DELETE_FAILURE: null
+  ARTICLE_DELETE_FAILURE: null,
+
+  ARTICLE_END_DELETE: null
 });
 
 export const headerConstants = keyMirror({
