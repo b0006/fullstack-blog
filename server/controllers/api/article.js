@@ -16,7 +16,9 @@ class Article {
       APP.log.info('Articles get from DB');
 
       try {
-        articles = await models.article.findAll();
+        articles = await models.article.findAll({
+          order: [['updatedAt', 'DESC']]
+        });
       } catch (e) {
         res.send({
           status: false,
@@ -26,7 +28,7 @@ class Article {
       }
 
       articles = articles.map(item => item.dataValues);
-      cache.put(constants.CACHE_ARTICLE, articles);
+      updateCookieArticle(articles);
     }
 
     res.send({
@@ -97,7 +99,7 @@ class Article {
         }
       });
       if (created) {
-        addCookieArticle(article.dataValues);
+        updateCookieArticle(article.dataValues);
         res.send({
           status: true
         });
@@ -118,18 +120,16 @@ class Article {
   }
 }
 
-function addCookieArticle(newArticle) {
-  const cacheArticles = cache.get(constants.CACHE_ARTICLE);
-  clearCookieArticle();
-
-  console.log(cacheArticles);
-
-  let newArticles = cacheArticles;
-  newArticles.push(newArticle);
-
-  console.log(newArticles);
-
-  cache.put(constants.CACHE_ARTICLE, newArticles);
+function updateCookieArticle(newArticle) {
+  if (newArticle.length) {
+    cache.put(constants.CACHE_ARTICLE, newArticle);
+  } else {
+    const cacheArticle = cache.get(constants.CACHE_ARTICLE);
+    if (cacheArticle) {
+      cacheArticle.unshift(newArticle);
+      cache.put(constants.CACHE_ARTICLE, cacheArticle);
+    }
+  }
 }
 
 function clearCookieArticle() {

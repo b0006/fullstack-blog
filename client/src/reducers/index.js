@@ -1,12 +1,14 @@
 import { combineReducers } from 'redux';
-import { authentication } from '../reducers/auth';
-import { article } from '../reducers/api/article';
-import { header } from '../reducers/header';
+import { authentication } from './auth';
+import { article } from './api/article';
+import { header } from './header';
+import { modal } from './modal';
 
 const rootReducer = combineReducers({
   authentication,
   article,
-  header
+  header,
+  modal
 });
 
 export default rootReducer;

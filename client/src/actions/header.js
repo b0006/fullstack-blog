@@ -1,4 +1,4 @@
-import { headerConstats } from '../constants';
+import { headerConstants } from '../constants';
 
 function setActiveMenu(activeMenu) {
   return dispatch => {
@@ -11,9 +11,9 @@ function setActiveMenu(activeMenu) {
     }
   };
 
-  function request(activeMenu) { return { type: headerConstats.HEADER_SET_ACTIVE_ITEM_REQUEST, activeMenu }; }
-  function success(activeMenu) { return { type: headerConstats.HEADER_SET_ACTIVE_ITEM_SUCCESS, activeMenu }; }
-  function failure(error) { return { type: headerConstats.HEADER_SET_ACTIVE_ITEM_FAILURE, error }; }
+  function request(activeMenu) { return { type: headerConstants.HEADER_SET_ACTIVE_ITEM_REQUEST, activeMenu }; }
+  function success(activeMenu) { return { type: headerConstants.HEADER_SET_ACTIVE_ITEM_SUCCESS, activeMenu }; }
+  function failure(error) { return { type: headerConstants.HEADER_SET_ACTIVE_ITEM_FAILURE, error }; }
 }
 
 export {

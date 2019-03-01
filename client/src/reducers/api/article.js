@@ -5,7 +5,13 @@ const initialState = {
   articleList: [],
   currentArticle: null,
   currentArticleLoading: true,
-  addArticleSuccess: null
+  addArticleSuccess: null,
+
+  showModalDelete: false,
+  currentArticleId: null,
+
+  modalType: null,
+  modalProps: {}
 };
 
 const article = (state = initialState, action) => {

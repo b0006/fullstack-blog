@@ -18,3 +18,11 @@
 .blog-item__button {
     text-align: right;
 }
+
+.btnDelArticle {
+    position: absolute;
+    padding: 3px !important;
+    background-color: white !important;
+    border-radius: 20px !important;
+    cursor: pointer;
+}

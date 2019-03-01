@@ -62,7 +62,6 @@ function addArticle(title, content) {
   function success() { return { type: articleConstants.ARTICLE_ADD_SUCCESS }; }
   function failure() { return { type: articleConstants.ARTICLE_ADD_FAILURE }; }
 }
-
 export {
   getList,
   getArticleByValue,

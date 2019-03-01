@@ -3,57 +3,50 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import './BlogItem.css';
-
-import nodejs from './nodejs.png';
 import iconTemp from './nodejs-1440x900.png';
+import { modalActions } from '../../../actions';
+import { articleConstants } from '../../../constants';
 
 class BlogItem extends Component {
-  state = {
-    showDesc: false
+  closeModal = () => {
+    const { hideModal } = this.props;
+    hideModal();
   };
 
-  onChange = () => {
-    this.setState({
-      showDesc: !this.state.showDesc
-    });
+  onDeleteArticle = (articleId) => {
+
   };
 
-  onShowDesc = () => {
-    this.setState({
-      showDesc: true
-    });
-  };
-
-  onShowImg = () => {
-    this.setState({
-      showDesc: false
-    });
+  openConfirmModal = (articleId, articleTitle) => {
+    const { showModal } = this.props;
+    showModal({
+      action: articleConstants.ARTICLE_DELETE_REQUEST,
+      articleId: articleId,
+      open: true,
+      title: 'Delete',
+      text: `Are you sure you want to delete "${articleTitle}"?`,
+      btnOk: 'Delete',
+      btnCancel: 'Cancel',
+      confirmAction: this.closeModal,
+      closeModal: this.closeModal,
+      confirmModal: this.onDeleteArticle(articleId)
+    }, 'confirm');
   };
 
   render() {
-    const { showDesc } = this.state;
-    let { img, description, title, icon, value } = this.props;
+    let { img, description, title, icon, value, id } = this.props;
     if (!img) {
       img = iconTemp;
     }
-
-    if (!icon) {
-      icon = nodejs;
-    }
-
     const { loggedIn } = this.props;
-    const updateArticleBtn = loggedIn
-      ? <Link to={'/updateArticle?id=1'}><button className="uk-button uk-button-secondary">Изменить</button></Link>
+    const deleteBtn = loggedIn
+      ? <button className="uk-button uk-button-default" type="button" onClick={() => this.openConfirmModal(id, title)}>Delete</button>
       : null;
 
-    // const img = iconTemp;
-    // const description = 'Description of an article';
-    // const title = 'Article title Article title Article title Article title Article title';
-    // const icon = nodejs;
-
     return (
-      <div className="blog-item" onMouseEnter={this.onShowDesc} onMouseLeave={this.onShowImg}>
+      <div className="blog-item">
         <div className="uk-card uk-card-hover uk-card-default">
+          {deleteBtn}
           <Link to={'/article/' + value}>
             <div className="uk-card-media-top uk-text-center">
               <img src={img} alt={title} />
@@ -77,4 +70,9 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(BlogItem);
+const mapDispatchToProps = {
+  showModal: modalActions.showModal,
+  hideModal: modalActions.hideModal
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(BlogItem);

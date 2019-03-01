@@ -9,6 +9,7 @@ import Preloader from '../../containers/Preloader';
 import NewArticle from '../NewArticle';
 import UpdateArticle from '../UpdateArticle';
 import Article from '../../components/Article';
+import Footer from '../../containers/Footer';
 
 import '../../assets/css/uikit.css';
 import '../../assets/css/uikit-rtl.css';
@@ -35,6 +36,7 @@ class App extends Component {
           <Route path="/updateArticle/:value" exact component={UpdateArticle} />
           <Route path="/article/:value" exact component={Article} />
         </Switch>
+        <Footer />
       </div>
     );
   }

@@ -3,24 +3,14 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import EmailEditor from 'react-email-editor';
 
+import './NewArticle.css';
 import { articleActions } from '../../actions';
 
 class NewArticle extends Component {
   state = {
     title: '',
-    content: ''
-  };
-
-  exportHtml = (event) => {
-    event.preventDefault();
-
-    this.editor.exportHtml(data => {
-      const { /*design,*/ html } = data;
-
-      this.setState({
-        content: html
-      });
-    });
+    errorMsg: null,
+    submitted: false
   };
 
   onChangeTitle = event => {
@@ -31,15 +21,50 @@ class NewArticle extends Component {
 
   onAddArticle = () => {
     const { addArticle } = this.props;
-    const { title, content } = this.state;
+    const { title } = this.state;
 
-    addArticle(title, content);
+    this.setState({
+      submitted: false
+    });
+
+    if (title.length) {
+
+      this.editor.exportHtml(data => {
+        const { /*design,*/ html } = data;
+
+        if (html.length) {
+          this.setState({
+            content: html,
+            errorMsg: null,
+            submitted: true
+          });
+
+          addArticle(title, html);
+        } else {
+          this.setState({
+            errorMsg: 'Empty content'
+          });
+        }
+
+      });
+    } else {
+      this.setState({
+        errorMsg: 'Empty title'
+      });
+    }
   };
 
   render() {
-    const { loggedIn } = this.props;
+    const { loggedIn, addArticleSuccess } = this.props;
     if (!loggedIn) {
       return <Redirect to="/" />;
+    }
+
+    const { errorMsg, submitted } = this.state;
+    const error = errorMsg ? errorMsg : null;
+
+    if (addArticleSuccess && submitted) {
+      alert('Ok');
     }
 
     return (
@@ -56,21 +81,22 @@ class NewArticle extends Component {
             />
           </div>
 
-          <h1>react-email-editor Demo</h1>
-
-          <input type="button" value="Add" onClick={this.onAddArticle} />
-
-          <div>
-            <button onClick={this.exportHtml}>Export HTML</button>
+          <div className="uk-margin">
+            <div className="editor_block">
+              <EmailEditor
+                ref={editor => this.editor = editor}
+              />
+            </div>
           </div>
 
-          <div>
-            <p dangerouslySetInnerHTML={{__html: this.state.content}} />
+          <div className="uk-margin">
+            {error}
           </div>
 
-          <EmailEditor
-            ref={editor => this.editor = editor}
-          />
+          <div className="uk-margin">
+            <input className="uk-button uk-button-primary" type="button" value="Add" onClick={this.onAddArticle} />
+          </div>
+
         </fieldset>
       </form>
     );
@@ -79,8 +105,10 @@ class NewArticle extends Component {
 
 const mapStateToProps = (state) => {
   const { loggedIn } = state.authentication;
+  const { addArticleSuccess } = state.article;
   return {
-    loggedIn
+    loggedIn,
+    addArticleSuccess
   };
 };
 

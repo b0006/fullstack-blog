@@ -27,6 +27,7 @@ class BlogList extends Component {
           articleList.map(item => (
             <BlogItem
               key={'article_item_' + item.id}
+              id={item.id}
               value={item.value}
               title={item.title}
               img={null}
