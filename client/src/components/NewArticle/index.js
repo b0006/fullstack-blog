@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-import EmailEditor from 'react-email-editor';
+import CKEditor from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 import './NewArticle.css';
-import { articleActions } from '../../actions';
+import { articleActions, modalActions } from '../../actions';
 
 class NewArticle extends Component {
   state = {
     title: '',
+    content: '',
     errorMsg: null,
     submitted: false
   };
@@ -19,53 +21,68 @@ class NewArticle extends Component {
     });
   };
 
-  onAddArticle = () => {
+  onAddArticle = (article) => {
+    const { title, content } = article;
     const { addArticle } = this.props;
-    const { title } = this.state;
 
-    this.setState({
-      submitted: false
-    });
+    addArticle(title, content);
+  };
 
-    if (title.length) {
+  onShowModal = () => {
+    const {title, content} = this.state;
+    const {showModal, hideModal} = this.props;
 
-      this.editor.exportHtml(data => {
-        const { /*design,*/ html } = data;
+    const article = {
+      title,
+      content
+    };
 
-        if (html.length) {
-          this.setState({
-            content: html,
-            errorMsg: null,
-            submitted: true
-          });
+    let errorMsg = null;
+    if (!title.length && !content.length) {
+      errorMsg = 'Title and content are empty';
+    } else if (!title.length && content.length) {
+      errorMsg = 'Title is empty';
+    } else if (title.length && !content.length) {
+      errorMsg = 'Content is empty';
+    }
 
-          addArticle(title, html);
-        } else {
-          this.setState({
-            errorMsg: 'Empty content'
-          });
-        }
-
-      });
+    if (!errorMsg) {
+      showModal({
+        article,
+        open: true,
+        title: 'Message',
+        text: `Are you sure you want to add "${title}"?`,
+        btnOkText: 'Add',
+        btnCancelText: 'Cancel',
+        confirmAction: () => { this.onAddArticle(article); },
+        closeModal: () => { hideModal(); }
+      }, 'confirm');
     } else {
       this.setState({
-        errorMsg: 'Empty title'
+        errorMsg
       });
     }
   };
 
+  componentWillUpdate(nextProps, nextState, nextContext) {
+    const { title, content } = nextState;
+  }
+
+  onContentChange = (event, editor) => {
+    const data = editor.getData();
+    this.setState({
+      content: data
+    });
+  };
+
   render() {
-    const { loggedIn, addArticleSuccess } = this.props;
+    const { loggedIn } = this.props;
     if (!loggedIn) {
       return <Redirect to="/" />;
     }
 
-    const { errorMsg, submitted } = this.state;
+    const { errorMsg, content } = this.state;
     const error = errorMsg ? errorMsg : null;
-
-    if (addArticleSuccess && submitted) {
-      alert('Ok');
-    }
 
     return (
       <form>
@@ -83,8 +100,15 @@ class NewArticle extends Component {
 
           <div className="uk-margin">
             <div className="editor_block">
-              <EmailEditor
-                ref={editor => this.editor = editor}
+              <CKEditor
+                editor={ ClassicEditor }
+                data={content}
+                onInit={ editor => {
+                  console.log( 'Editor is ready to use!', editor );
+                } }
+                onChange={ ( event, editor ) => {
+                  this.onContentChange(event, editor);
+                } }
               />
             </div>
           </div>
@@ -94,7 +118,7 @@ class NewArticle extends Component {
           </div>
 
           <div className="uk-margin">
-            <input className="uk-button uk-button-primary" type="button" value="Add" onClick={this.onAddArticle} />
+            <input className="uk-button uk-button-primary" type="button" value="Add" onClick={this.onShowModal} />
           </div>
 
         </fieldset>
@@ -113,7 +137,9 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = {
-  addArticle: articleActions.addArticle
+  addArticle: articleActions.addArticle,
+  showModal: modalActions.showModal,
+  hideModal: modalActions.hideModal
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewArticle);

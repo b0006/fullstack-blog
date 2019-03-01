@@ -2,11 +2,26 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import AddArticle from '../../containers/AddArticle';
-import { articleActions } from '../../actions';
+import {articleActions, modalActions} from '../../actions';
 
 import BlogItem from './BlogItem';
 
 class BlogList extends Component {
+  componentWillUpdate(nextProps, nextState, nextContext) {
+    const { deleteArticleSuccess, showModal, hideModal } = nextProps;
+
+    if (deleteArticleSuccess) {
+      showModal({
+        open: true,
+        title: 'Delete',
+        text: 'Article successfully deleted',
+        btnOkText: 'Ok',
+        closeModal: () => {
+          hideModal();
+        }
+      }, 'alert');
+    }
+  }
 
   componentDidMount() {
     const { getList } = this.props;
@@ -43,16 +58,19 @@ class BlogList extends Component {
 
 const mapStateToProps = (state) => {
   const { loggedIn } = state.authentication;
-  const {  articleGetError, articleList} = state.article;
+  const { articleGetError, articleList, deleteArticleSuccess } = state.article;
   return {
     articleGetError,
     articleList,
-    loggedIn
+    loggedIn,
+    deleteArticleSuccess
   };
 };
 
 const mapDispatchToProps = {
-  getList: articleActions.getList
+  getList: articleActions.getList,
+  showModal: modalActions.showModal,
+  hideModal: modalActions.hideModal
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(BlogList);
